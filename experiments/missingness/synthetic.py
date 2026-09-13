@@ -11,7 +11,7 @@ import scipy
 
 from data.synthetic.get import get_dataset
 
-synth_mat, true_fcluster = get_dataset()
+synth_mat, true_fcluster, _ = get_dataset()
 
 results = runs.perform_runs(
     synth_mat, 

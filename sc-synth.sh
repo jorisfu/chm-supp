@@ -5,7 +5,7 @@
 #SBATCH --mail-user=joris.funk@student.hpi.de
 #SBATCH --partition=cpu-batch # -p
 #SBATCH --cpus-per-task=128 # -c
-#SBATCH --mem=40gb
+#SBATCH --mem=32gb
 #SBATCH --time=10:05:00
 #SBATCH --output=job_test_%j.log # %j is job id
 

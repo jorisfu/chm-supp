@@ -18,7 +18,7 @@ results = runs.perform_runs(
     ev_mat, 
     "1234",
     true_fcluster,
-    5,
+    2,
 )
 
 ts = str(int(time.time()))
