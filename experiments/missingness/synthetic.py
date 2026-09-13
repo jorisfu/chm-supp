@@ -16,8 +16,6 @@ synth_mat, true_fcluster = get_dataset()
 results = runs.perform_runs(
     synth_mat, 
     "1234",
-    scipy.spatial.distance.pdist(synth_mat, "sqeuclidean"),
-    scipy.spatial.distance.pdist(synth_mat, "euclidean"),
     true_fcluster,
     5,
 )

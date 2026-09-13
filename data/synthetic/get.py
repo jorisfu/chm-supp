@@ -5,8 +5,8 @@ def get_dataset():
     ## CONFIG
     ##
 
-    DATA_SHAPE = (80, 80) # (rows, cols)
-    RNG = np.random.default_rng(5)
+    DATA_SHAPE = (100, 100) # (rows, cols)
+    RNG = np.random.default_rng(1337)
 
     MEAN_UP = 1
     MEAN_DOWN = -1
@@ -26,9 +26,11 @@ def get_dataset():
     cov = np.eye(DATA_SHAPE[0], DATA_SHAPE[1]) * VAR_TOTAL
     d_du = RNG.multivariate_normal(mean_du, cov, DATA_SHAPE[0] // 2)
     d_ud = RNG.multivariate_normal(mean_ud, cov, DATA_SHAPE[0] // 2)
-    d = np.concatenate([d_du, d_ud])
+    d = np.concatenate([d_du, d_ud]).transpose()
 
     # Flat cluster assignments
     true_fcluster_cols = [0] * (DATA_SHAPE[1] // 2) + [1] * (DATA_SHAPE[1] // 2)
 
-    return d, true_fcluster_cols
+    col_gm = {"Column": {str(i): "C_DU" for i in range(DATA_SHAPE[0]//2)} | {str(i): "C_UD" for i in range(DATA_SHAPE[0]//2, DATA_SHAPE[0])}}
+
+    return d, true_fcluster_cols, col_gm

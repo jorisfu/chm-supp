@@ -17,8 +17,6 @@ ev_mat = ev_df.to_numpy()
 results = runs.perform_runs(
     ev_mat, 
     "1234",
-    scipy.spatial.distance.pdist(ev_mat, "sqeuclidean"),
-    scipy.spatial.distance.pdist(ev_mat, "euclidean"),
     true_fcluster,
     5,
 )
