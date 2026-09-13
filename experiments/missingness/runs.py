@@ -4,6 +4,10 @@ import numpy as np
 import pandas as pd
 import scipy
 
+from scipy.cluster.hierarchy import fcluster
+
+from sklearn.metrics import adjusted_rand_score, rand_score
+
 import traceback
 
 from clusteredheatmap.algos.modelselection import get_best_gmm
@@ -111,10 +115,10 @@ def perform_runs(
     # Scenario 3: Only to 30% of vectors with lowest sum of intensities
     if "3" in scenarios:
         print(">>> SCENARIO 3")
-        m = int(0.3 * DATA_SHAPE[0]) # amount of vectors with lowest sum of intensities affected
-        sums = d.sum(axis=1)
+        m = int(0.3 * data_rows.shape[0]) # amount of vectors with lowest sum of intensities affected
+        sums = data_rows.sum(axis=1)
         indices = np.argpartition(sums, m-1)[:m]
-        missfun = lambda data, p: add_nans_uniform_specific_samples(d, indices, p, rng)
+        missfun = lambda data, p: add_nans_uniform_specific_samples(data, indices, p, rng)
         run_results["uniform_lowestrowsumsonly"] = run(data_rows, missfun)
 
     # Scenario 4: Only to lower half of scalars
