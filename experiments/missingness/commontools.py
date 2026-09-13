@@ -45,7 +45,7 @@ def add_nans_uniform_only_lowerhalf(data, p, rng):
     mask = data <= threshold
 
     # Apply p missingness randomly on all masked values
-    q = p * np.sum(mask) / (n_samples * n_features) # TODO: Sanity Check before run
+    q = p * np.sum(mask) / (n_samples * n_features)
     d_miss = data.copy()
     missing_matrix = rng.choice([np.nan, 1.0], size=data.shape, p=[q, 1-q])
     d_miss[mask] *= missing_matrix[mask]

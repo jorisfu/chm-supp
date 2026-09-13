@@ -1,7 +1,10 @@
 import pandas as pd
 
+import pathlib
+DIR = pathlib.Path(__file__).parent.resolve()
+
 def get_dataset():
-    df = pd.read_csv("./ev.csv")
+    df = pd.read_csv(DIR / "./ev.csv")
     df["Majority protein IDs"] = df["Majority protein IDs"].apply(lambda pid: str(pid).split(';')[0])
 
 
@@ -11,14 +14,14 @@ def get_dataset():
         name = w[1] + "_rep" + w[-1]
         df.rename(columns={i: name}, inplace=True)
 
-    # Get mappings
+    # Get mappings and flat cluster assignment
     mapping_df = df.drop(columns=["protein_repIDs", "Significant_repSignificant"]).iloc[1]
     lk = mapping_df.keys()
     lv = list(mapping_df)
     mapping = {k:v for k, v in zip(lk, lv)}
-    mapping
 
-    col_map = {"Cancer": mapping}
+    groups = sorted(list(set(lv)))
+    true_fcluster = [groups.index(g) for g in lv]
 
     # Cleanup and filter
     df = df.set_index("protein_repIDs")
@@ -33,4 +36,4 @@ def get_dataset():
     # Apply z-score
     df.update(df.apply(z_score_normalization, axis=1))
 
-    return df
+    return df, true_fcluster

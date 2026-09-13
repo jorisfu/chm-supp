@@ -3,12 +3,15 @@ from commontools import add_nans_uniform_everywhere, add_nans_uniform_partial, c
 import numpy as np
 import pandas as pd
 
+from clusteredheatmap.algos.modelselection import get_best_gmm
+
 def perform_runs(
-    data, # Dataset, columns are clustered
+    data, # Dataset as matrix, columns are clustered
     scenarios,
     truedist_cols_sq, # Condensted sqeuclidean distmat
     truedist_cols, # Condensed euclidean distmat
     true_flatclusters, # List of integers (encoded cluster assignments for col indices)
+    N_REPLICATES = 50,
 ):
 
     ##
@@ -17,7 +20,6 @@ def perform_runs(
 
     LINKAGE = "complete"
     MISSINGNISS_RATIOS = [i/100 for i in [0, 1, 2, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]]
-    N_REPLICATES = 50
 
     # (fnname, distance_args, reference_distmat)
     DISTANCES = [
@@ -28,14 +30,13 @@ def perform_runs(
         ("eirola_esd_gmm", truedist_cols_sq, {}),
         ("mesquita_eed", truedist_cols, {}),
     ]
-    DISTNAMES = [d[0] for d in DISTANCES]
 
     ##
     ## Single run
     ##
 
     def run(data, missfun):
-        results = {d: {int(i*100): [] for i in MISSINGNISS_RATIOS} for d in DISTNAMES}
+        results = {d[0]: {int(i*100): [] for i in MISSINGNISS_RATIOS} for d in DISTANCES}
         for p in MISSINGNISS_RATIOS:
             
             # Only 1 replicate for no missingness
@@ -64,8 +65,6 @@ def perform_runs(
                                 distance=dist,
                                 linkage=LINKAGE,
                                 use_completecase_analysis=True,
-                                column_group_mappings=col_gm,
-                                row_group_mappings=row_gm,
                                 cluster_rows=False,
                                 distance_args=distance_args,
                             )
@@ -125,9 +124,8 @@ def perform_runs(
     fullres_df = pd.DataFrame(columns=["Distance", "Run", "Missingness", "Replicate", "CCC", "Rand", "aRand"])
 
     for run, result in run_results.items():
-        for idx, (dist, comp, _args) in enumerate(DISTANCES):
+        for dist, reference_distmat, _args in DISTANCES:
             res_for_distance = result[dist]
-            reference_distmat = comp
 
             for missingness in res_for_distance.keys():
                 for jdx, replicate in enumerate(result[dist][missingness]):
@@ -137,7 +135,6 @@ def perform_runs(
                     flatclusters = fcluster(replicate.linkage_matrix_cols, t=n_flatclusters, criterion="maxclust") 
 
                     # (a)Rand (2 clusters)
-                    # TODO BEFORE RUN: THIS IS FISHY!!!!
                     rand_cols = rand_score(true_flatclusters, flatclusters)
                     arand_cols = adjusted_rand_score(true_flatclusters, flatclusters)
 
