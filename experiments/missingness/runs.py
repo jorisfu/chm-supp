@@ -7,6 +7,7 @@ import scipy
 import traceback
 
 from clusteredheatmap.algos.modelselection import get_best_gmm
+from clusteredheatmap.algos.distance import DistanceError
 from clusteredheatmap.chm import ClusteredHeatMap
 
 def perform_runs(
@@ -82,7 +83,7 @@ def perform_runs(
 
                         break
                     # Failure should only be due to CC criterion, draw new replicate if so
-                    except ValueError as e:
+                    except DistanceError as e:
                         print(traceback.format_exc())
                         continue
 
