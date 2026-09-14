@@ -17,8 +17,9 @@ results = runs.perform_runs(
     synth_mat, 
     "1234",
     true_fcluster,
-    5,
+    50,
 )
 
 ts = str(int(time.time()))
+results.to_csv(f"runs-synth-{ts}.csv")
 results.to_csv(f"./results/runs-synth-{ts}.csv")

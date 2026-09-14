@@ -22,4 +22,5 @@ results = runs.perform_runs(
 )
 
 ts = str(int(time.time()))
+results.to_csv(f"runs-ev-{ts}.csv")
 results.to_csv(f"./results/runs-ev-{ts}.csv")
