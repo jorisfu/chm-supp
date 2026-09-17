@@ -2,7 +2,10 @@ import pandas as pd
 import pathlib
 DIR = pathlib.Path(__file__).parent.resolve()
 
+mapping = None
+
 def get_dataset():
+    global mapping
     df = pd.read_csv(DIR / "./ev.csv")
     df["Majority protein IDs"] = df["Majority protein IDs"].apply(lambda pid: str(pid).split(';')[0])
 
@@ -36,3 +39,7 @@ def get_dataset():
     df.update(df.apply(z_score_normalization, axis=1))
 
     return df, true_fcluster
+
+def get_groupmap():
+    global mapping
+    return {"Cancer": mapping}

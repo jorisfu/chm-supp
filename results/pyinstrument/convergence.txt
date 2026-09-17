@@ -1,0 +1,9 @@
+axis,k,did_converge,iter
+row,1,y,34
+row,2,y,85
+row,3,n,200
+row,4,n,200
+col,1,n,200
+col,2,y,2
+col,3,y,2
+col,4,y,2

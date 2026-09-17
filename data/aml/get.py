@@ -17,3 +17,4 @@ def get_groupmap():
     sample_groupings = {}
     mapping = metadata_df[["Sample", "Group"]].to_dict(orient="tight")["data"]
     sample_groupings["Group"] = {k:v for [k, v] in mapping}
+    return sample_groupings

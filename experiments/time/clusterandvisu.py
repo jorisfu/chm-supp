@@ -4,12 +4,12 @@ module_path = os.path.abspath(os.path.join('.'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-from data.aml.get import get_dataset, get_groupmap
+from data.ev.get import get_dataset, get_groupmap
 
 from clusteredheatmap.chm import ClusteredHeatMap
 from clusteredheatmap.visu.plotly.builder import PlotlyVisuBuilder
 
-df = get_dataset()
+df = tuple(get_dataset())[0]
 sample_gm = get_groupmap()
 
 dist = sys.argv[1]
@@ -24,20 +24,13 @@ c = ClusteredHeatMap(
 
 b = PlotlyVisuBuilder(c, vertical_layout="dgh", horizontal_layout="dgh")
 b.add_heatmap(
-    _zmin=-3.5,
-    _zmid=0.0,
-    _zmax=2.5,
-    colorscale=[[0.0, "#0000FF"], [0.5, "#FFFFFF"], [1.0, "#FF0000"]],
+    # _zmin=-3.5,
+    # _zmid=0.0,
+    # _zmax=2.5,
     nan_color="#000000"
 )
 b.add_col_dendrogram()
 b.add_row_dendrogram()
-b.add_col_group_markers(_color_overrides={"Group": {"REL-FREE": "#09c901", "RELAPSE": "#760696"}})
+b.add_col_group_markers()
 fig = b.get_figure()
-fig.update_layout(
-    autosize=True,
-    width=600,
-    height=800,
-    title="AML"
-)
 fig.show()
