@@ -23,12 +23,7 @@ c = ClusteredHeatMap(
 )
 
 b = PlotlyVisuBuilder(c, vertical_layout="dgh", horizontal_layout="dgh")
-b.add_heatmap(
-    # _zmin=-3.5,
-    # _zmid=0.0,
-    # _zmax=2.5,
-    nan_color="#000000"
-)
+b.add_heatmap()
 b.add_col_dendrogram()
 b.add_row_dendrogram()
 b.add_col_group_markers()
