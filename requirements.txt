@@ -1,4 +1,4 @@
-clusteredheatmap @ git+https://github.com/jorisfu/clusteredheatmap.git@v0.0.6
+clusteredheatmap
 numpy
 pandas
 scipy

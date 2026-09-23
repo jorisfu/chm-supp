@@ -19,7 +19,7 @@ synth_mat, true_fcluster, _ = get_dataset()
 
 MISSINGNISS_RATIOS = [i/100 for i in [10, 15, 20, 25, 30, 35, 40, 45, 50]]
 N_REPLICATES = 50
-rng = rng = np.random.default_rng(123)
+rng = np.random.default_rng(123)
 
 print("Missingness,Replicate,n_components", flush=True)
 for p in MISSINGNISS_RATIOS:
